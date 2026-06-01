@@ -103,7 +103,7 @@ Your face becomes the DJ. No backend, no data uploads — **everything runs loca
 ```bash
 # Clone the repository
 git clone https://github.com/<harysri>/emotion_detecton.git
-cd facetunes
+cd emotion_detecton
 
 # Navigate to the client directory
 cd client

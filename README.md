@@ -13,7 +13,7 @@
 [![Framer Motion](https://img.shields.io/badge/Framer_Motion-12-0055FF?style=flat-square&logo=framer&logoColor=white)](https://www.framer.com/motion)
 [![License](https://img.shields.io/badge/License-MIT-green?style=flat-square)](LICENSE)
 
-[![Live Demo](https://img.shields.io/badge/Live-Demo-blue?style=flat-square&logo=google-chrome&logoColor=white)](https://your-demo-url.example)
+[![Live Demo](https://img.shields.io/badge/Live-Demo-blue?style=flat-square&logo=google-chrome&logoColor=white)](https://facetuneshrx.netlify.app/)
 
 <br>
 
@@ -102,7 +102,7 @@ Your face becomes the DJ. No backend, no data uploads — **everything runs loca
 
 ```bash
 # Clone the repository
-git clone https://github.com/<your-username>/facetunes.git
+git clone https://github.com/<harysri>/emotion_detecton.git
 cd facetunes
 
 # Navigate to the client directory
@@ -119,7 +119,7 @@ The app will be available at `http://localhost:5173`.
 
 ### Live Demo
 
-Try the live demo at: https://your-demo-url.example
+Try the live demo at: https://facetuneshrx.netlify.app/
 
 ### Build for Production
 
@@ -268,9 +268,9 @@ Distributed under the **MIT License**. See `LICENSE` for more information.
 
 ## 👤 Author
 
-**Your Name** — [@your-username](https://github.com/your-username)
+**Your Name** — [@harysri](https://github.com/harysri)
 
-Project Link: [https://github.com/your-username/facetunes](https://github.com/your-username/facetunes)
+Project Link: [https://github.com/harysri/emotion_detecton](https://github.com/harysri/emotion_detection)
 
 ---
 

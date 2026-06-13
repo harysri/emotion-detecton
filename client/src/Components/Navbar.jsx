@@ -71,18 +71,6 @@ const Navbar = () => {
                 )}
               </Link>
             ))}
-
-            {/* CTA Button - Try Now */}
-            {/* <Link
-              to="/play"
-              className="ml-4 group relative px-6 py-2.5 rounded-xl bg-gradient-to-r from-purple-600 to-cyan-500 text-white font-semibold text-sm transition-all duration-300 hover:shadow-[0_0_25px_rgba(139,92,246,0.4)] overflow-hidden"
-            >
-              <span className="relative z-10 flex items-center gap-2">
-                <Sparkles className="w-4 h-4" />
-                Try Now
-              </span>
-              <div className="absolute inset-0 bg-gradient-to-r from-cyan-600 via-purple-600 to-purple-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-            </Link> */}
           </div>
 
           {/* MOBILE MENU BUTTON */}
@@ -137,17 +125,6 @@ const Navbar = () => {
                 {item.name}
               </Link>
             ))}
-
-            {/* <div className="px-4 pt-3">
-              <Link
-                to="/emotion-detection"
-                onClick={() => setIsOpen(false)}
-                className="flex items-center justify-center gap-2 w-full px-6 py-3 rounded-xl bg-gradient-to-r from-purple-600 to-cyan-500 text-white font-semibold text-base hover:shadow-[0_0_20px_rgba(139,92,246,0.3)] transition-all duration-300"
-              >
-                <Sparkles className="w-4 h-4" />
-                Try Face Detection
-              </Link>
-            </div> */}
           </div>
         </div>
       </div>

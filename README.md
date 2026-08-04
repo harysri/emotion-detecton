@@ -109,15 +109,6 @@ The app will be available at `http://localhost:5173`.
 
 Try the live demo at: https://facetuneshrx.netlify.app/
 
-### Build for Production
-
-```bash
-npm run build
-npm run preview   # Preview the production build locally
-```
-
----
-
 ## 📁 Project Structure
 
 ```

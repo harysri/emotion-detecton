@@ -59,18 +59,6 @@ Your face becomes the DJ. No backend, no data uploads — **everything runs loca
 
 ---
 
-## 📸 Screenshots
-
-```
-📁 screenshots/
-├── home.png            # Landing page with hero, features, CTA
-├── detection.png       # Live webcam with face bounding box & landmarks
-├── emotion-overlay.png # Full-screen emoji display on emotion change
-└── music-player.png    # Music player controls, playlist queue
-```
-
-> **Note:** Add your own screenshots inside the `screenshots/` folder and they will render here automatically.
-
 ### Home Page
 
 ![Home](./screenshots/home.png)
@@ -210,21 +198,6 @@ Every 100ms the app:
 3. Picks the dominant emotion (confidence > 50%)
 4. Switches the playlist if the emotion changed
 5. Draws detection boxes and landmarks on a `<canvas>` overlay
-
----
-
-## ☁️ Deployment
-
-The app is a fully static client-side SPA — deploy anywhere that serves static files.
-
-### Quick Deploy
-
-| Platform             | Instructions                                                                     |
-| -------------------- | -------------------------------------------------------------------------------- |
-| **Vercel**           | `npm i -g vercel && vercel --prod`                                               |
-| **Netlify**          | Connect repo → Publish directory: `client/dist` → Build command: `npm run build` |
-| **Cloudflare Pages** | Framework preset: Vite → Build command: `npm run build` → Output: `dist`         |
-| **GitHub Pages**     | Set `vite.config.js` `base` to `/<repo>/` → `npm run build` → deploy `dist/`     |
 
 ---
 

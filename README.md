@@ -37,6 +37,7 @@ Your face becomes the DJ. No backend, no data uploads — **everything runs loca
 - **7 Emotion States** — Detects happy, sad, angry, neutral, surprised, fearful, and disgusted
 - **Auto-Adaptive Playlists** — Curated tracks for each emotion, switching seamlessly as your mood changes
 - **Immersive Emoji Overlay** — Full-screen animated emoji + confidence display every time your emotion shifts
+- **Emotion Lock & Manual Override** — Freeze the playlist on your current mood so flickering expressions can't keep switching tracks, then override to any mood manually
 - **Full Music Player** — Play / pause, skip, seek, volume control, shuffle, repeat, and playlist queue
 - **Emotion History Log** — Timestamped log of detected emotions with confidence scores
 - **Privacy First** — All detection runs client-side; no images or data are sent to any server
@@ -232,7 +233,7 @@ Distributed under the **MIT License**. See `LICENSE` for more information.
 
 ## 👤 Author
 
-**Your Name** — [@harysri](https://github.com/harysri)
+**Srihari Satheeshan** — [@harysri](https://github.com/harysri)
 
 Project Link: [https://github.com/harysri/emotion_detecton](https://github.com/harysri/emotion_detection)
 

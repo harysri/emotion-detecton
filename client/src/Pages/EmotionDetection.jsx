@@ -2173,6 +2173,8 @@ import {
   Loader,
   Disc,
   Sparkles,
+  Lock,
+  Unlock,
 } from "lucide-react";
 
 const EmotionDetection = () => {
@@ -2191,6 +2193,11 @@ const EmotionDetection = () => {
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
   const [showEmojiDisplay, setShowEmojiDisplay] = useState(false);
+  const [isEmotionLocked, setIsEmotionLocked] = useState(false);
+
+  // Refs mirror state so the setInterval detection loop never reads stale values
+  const currentEmotionRef = useRef("neutral");
+  const isEmotionLockedRef = useRef(false);
 
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
@@ -2198,6 +2205,14 @@ const EmotionDetection = () => {
   const streamRef = useRef(null);
   const detectionIntervalRef = useRef(null);
   const emojiDisplayTimeoutRef = useRef(null);
+
+  useEffect(() => {
+    currentEmotionRef.current = currentEmotion;
+  }, [currentEmotion]);
+
+  useEffect(() => {
+    isEmotionLockedRef.current = isEmotionLocked;
+  }, [isEmotionLocked]);
 
   const emotionPlaylists = {
     happy: [
@@ -2433,6 +2448,20 @@ const EmotionDetection = () => {
     );
   };
 
+  // Toggle the emotion lock on / off
+  const toggleEmotionLock = () => setIsEmotionLocked((locked) => !locked);
+
+  // Manually force a playlist's emotion while locked (manual override)
+  const overrideEmotion = (emotion) => {
+    setIsEmotionLocked(true);
+    if (emotion === currentEmotionRef.current) return;
+    currentEmotionRef.current = emotion;
+    setCurrentEmotion(emotion);
+    setCurrentSongIndex(0);
+    setConfidence(0);
+    triggerEmojiDisplay();
+  };
+
   useEffect(() => {
     const loadModels = async () => {
       try {
@@ -2516,6 +2545,7 @@ const EmotionDetection = () => {
     setIsDetecting(false);
     setFaceDetected(false);
     setShowEmojiDisplay(false);
+    setIsEmotionLocked(false);
   };
 
   const detectEmotion = async () => {
@@ -2571,20 +2601,26 @@ const EmotionDetection = () => {
           }
         });
 
-        if (maxValue > 0.5 && dominantEmotion !== currentEmotion) {
-          setCurrentEmotion(dominantEmotion);
-          setConfidence(maxValue);
-          setCurrentSongIndex(0);
-          triggerEmojiDisplay();
+        if (maxValue > 0.5 && dominantEmotion !== currentEmotionRef.current) {
+          if (isEmotionLockedRef.current) {
+            // Emotion is locked: keep the playlist frozen so detection
+            // flicker cannot switch it, but still report live confidence.
+            setConfidence(maxValue);
+          } else {
+            setCurrentEmotion(dominantEmotion);
+            setConfidence(maxValue);
+            setCurrentSongIndex(0);
+            triggerEmojiDisplay();
 
-          setEmotionHistory((prev) => [
-            {
-              emotion: dominantEmotion,
-              time: new Date().toLocaleTimeString(),
-              confidence: maxValue,
-            },
-            ...prev.slice(0, 9),
-          ]);
+            setEmotionHistory((prev) => [
+              {
+                emotion: dominantEmotion,
+                time: new Date().toLocaleTimeString(),
+                confidence: maxValue,
+              },
+              ...prev.slice(0, 9),
+            ]);
+          }
         } else {
           setConfidence(maxValue);
         }
@@ -2829,6 +2865,14 @@ const EmotionDetection = () => {
                         <div className="w-3 h-3 bg-white rounded-full animate-pulse" />
                         <span className="text-sm font-bold">LIVE</span>
                       </div>
+
+                      {/* Emotion Locked Badge */}
+                      {isEmotionLocked && (
+                        <div className="absolute top-4 right-4 flex items-center gap-2 bg-amber-500/90 text-slate-950 px-4 py-2 rounded-full z-10">
+                          <Lock className="w-4 h-4" />
+                          <span className="text-sm font-bold">LOCKED</span>
+                        </div>
+                      )}
                     </>
                   )}
                 </div>
@@ -2887,6 +2931,81 @@ const EmotionDetection = () => {
                   </div>
                 </div>
               </div>
+            </div>
+
+            {/* Emotion Lock / Manual Override */}
+            <div className="bg-slate-900/50 backdrop-blur-sm rounded-2xl border border-slate-800 p-5">
+              <div className="flex items-start justify-between gap-4">
+                <div className="flex items-start gap-3">
+                  {isEmotionLocked ? (
+                    <Lock className="w-6 h-6 text-amber-400 mt-0.5 shrink-0" />
+                  ) : (
+                    <Unlock className="w-6 h-6 text-slate-400 mt-0.5 shrink-0" />
+                  )}
+                  <div>
+                    <h3 className="text-lg font-semibold">Playlist Lock</h3>
+                    <p className="text-xs text-slate-400 mt-1 max-w-xs">
+                      {isEmotionLocked
+                        ? `Frozen on ${emotionConfig[currentEmotion].label}. Detection flicker is ignored — pick a mood below to override manually.`
+                        : "Stop the playlist from switching when your expression flickers between states."}
+                    </p>
+                  </div>
+                </div>
+                <button
+                  onClick={toggleEmotionLock}
+                  disabled={!isCameraOn}
+                  className={`flex items-center gap-2 px-4 py-2.5 rounded-xl font-semibold text-sm whitespace-nowrap transition-all ${
+                    !isCameraOn
+                      ? "bg-slate-800 text-slate-500 cursor-not-allowed"
+                      : isEmotionLocked
+                        ? "bg-amber-500 hover:bg-amber-400 text-slate-950"
+                        : "bg-gradient-to-r from-purple-600 to-cyan-600 text-white hover:shadow-lg hover:shadow-purple-600/40"
+                  }`}
+                >
+                  {isEmotionLocked ? (
+                    <>
+                      <Unlock className="w-4 h-4" />
+                      Unlock
+                    </>
+                  ) : (
+                    <>
+                      <Lock className="w-4 h-4" />
+                      Lock
+                    </>
+                  )}
+                </button>
+              </div>
+
+              <AnimatePresence initial={false}>
+                {isEmotionLocked && (
+                  <motion.div
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: "auto" }}
+                    exit={{ opacity: 0, height: 0 }}
+                    className="overflow-hidden"
+                  >
+                    <p className="text-xs uppercase tracking-wider text-slate-500 mt-4 mb-2">
+                      Manual override
+                    </p>
+                    <div className="flex flex-wrap gap-2">
+                      {Object.entries(emotionConfig).map(([key, cfg]) => (
+                        <button
+                          key={key}
+                          onClick={() => overrideEmotion(key)}
+                          className={`flex items-center gap-2 px-3 py-1.5 rounded-full border text-sm transition-colors ${
+                            currentEmotion === key
+                              ? `${cfg.bgColor} ${cfg.borderColor} text-white`
+                              : "border-slate-700 text-slate-300 hover:bg-slate-800"
+                          }`}
+                        >
+                          <span>{cfg.emoji}</span>
+                          <span>{cfg.label}</span>
+                        </button>
+                      ))}
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
 
             {/* Emotion History */}

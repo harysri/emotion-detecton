@@ -108,7 +108,7 @@ The app will be available at `http://localhost:5173`.
 
 ### Live Demo
 
-Try the live demo at: https://facetuneshrx.netlify.app/
+Try the live demo at:
 
 ## 📁 Project Structure
 

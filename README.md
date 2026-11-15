@@ -108,7 +108,7 @@ The app will be available at `http://localhost:5173`.
 
 ### Live Demo
 
-Try the live demo at:
+Try the live demo at: https://face-tunes-hrs.vercel.app
 
 ## 📁 Project Structure
 

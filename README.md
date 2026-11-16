@@ -40,6 +40,7 @@ Your face becomes the DJ. No backend, no data uploads — **everything runs loca
 - **Emotion Lock & Manual Override** — Freeze the playlist on your current mood so flickering expressions can't keep switching tracks, then override to any mood manually
 - **Full Music Player** — Play / pause, skip, seek, volume control, shuffle, repeat, and playlist queue
 - **Emotion History Log** — Timestamped log of detected emotions with confidence scores
+- **Emotion Timeline & Charts** — Live confidence timeline and mood distribution powered by Recharts, with one-click CSV export
 - **Privacy First** — All detection runs client-side; no images or data are sent to any server
 - **Responsive Dark UI** — Purple-cyan gradient theme built with Tailwind CSS and Framer Motion animations
 
@@ -196,8 +197,6 @@ Every 100ms the app:
 ## 🔮 Future Improvements
 
 - [ ] Audio visualizer (frequency bars synced to playback)
-- [ ] Emotion history charts over time (Recharts integration)
-- [ ] Export emotion timeline as CSV / image
 - [ ] More extensive playlists per emotion
 - [ ] User-customizable playlists (drag & drop tracks)
 - [ ] Voice command controls

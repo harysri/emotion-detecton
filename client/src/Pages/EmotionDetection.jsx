@@ -2148,6 +2148,19 @@
 
 import React, { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import {
+  ResponsiveContainer,
+  AreaChart,
+  Area,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  PieChart,
+  Pie,
+  Cell,
+} from "recharts";
+import Strands from "../Components/Strands";
 import * as faceapi from "@vladmandic/face-api";
 import {
   Camera,
@@ -2175,7 +2188,19 @@ import {
   Sparkles,
   Lock,
   Unlock,
+  Download,
 } from "lucide-react";
+
+// Strands palette mapped onto the site's purple → cyan gradient theme
+const STRANDS_COLORS = [
+  "#d946ef", // fuchsia
+  "#a855f7", // purple
+  "#7c3aed", // violet
+  "#f5f3ff", // near-white lavender core
+  "#22d3ee", // cyan
+  "#3b82f6", // blue
+  "#1e1b4b", // deep indigo
+];
 
 const EmotionDetection = () => {
   const [isCameraOn, setIsCameraOn] = useState(false);
@@ -2616,9 +2641,10 @@ const EmotionDetection = () => {
               {
                 emotion: dominantEmotion,
                 time: new Date().toLocaleTimeString(),
+                ts: Date.now(),
                 confidence: maxValue,
               },
-              ...prev.slice(0, 9),
+              ...prev.slice(0, 99),
             ]);
           }
         } else {
@@ -2682,6 +2708,62 @@ const EmotionDetection = () => {
   };
   const progress = duration > 0 ? (currentTime / duration) * 100 : 0;
 
+  // Chart data derived from the emotion history (oldest → newest)
+  const chartData = [...emotionHistory]
+    .reverse()
+    .map((item, index) => ({
+      index,
+      time: item.time,
+      emotion: item.emotion,
+      confidence: Number((item.confidence * 100).toFixed(1)),
+    }));
+
+  const emotionCounts = Object.keys(emotionConfig)
+    .map((key) => ({
+      key,
+      name: emotionConfig[key].label,
+      value: emotionHistory.filter((e) => e.emotion === key).length,
+    }))
+    .filter((entry) => entry.value > 0);
+
+  const emotionChartColors = {
+    happy: "#facc15",
+    sad: "#38bdf8",
+    angry: "#f87171",
+    neutral: "#94a3b8",
+    surprised: "#c084fc",
+    fearful: "#818cf8",
+    disgusted: "#4ade80",
+  };
+
+  const exportEmotionCSV = () => {
+    if (emotionHistory.length === 0) return;
+    const csvField = (value) => `"${String(value).replace(/"/g, '""')}"`;
+    const rows = [
+      ["Time", "Emotion", "Confidence (%)"].map(csvField).join(","),
+      ...[...emotionHistory]
+        .reverse()
+        .map((item) =>
+          [item.time, item.emotion, (item.confidence * 100).toFixed(1)]
+            .map(csvField)
+            .join(",")
+        ),
+    ];
+    const blob = new Blob([rows.join("\n")], {
+      type: "text/csv;charset=utf-8;",
+    });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = `emotion-history-${new Date()
+      .toISOString()
+      .slice(0, 10)}.csv`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  };
+
   const emojiVariants = {
     happy: {
       initial: { scale: 0, rotate: -180 },
@@ -2728,7 +2810,7 @@ const EmotionDetection = () => {
   };
 
   return (
-    <div className="min-h-screen pt-20 bg-gradient-to-br from-slate-950 via-purple-950/30 to-slate-950 text-white font-sans">
+    <div className="min-h-screen pt-24 sm:pt-20 bg-gradient-to-br from-slate-950 via-purple-950/30 to-slate-950 text-white font-sans">
       <audio ref={audioRef} />
 
       {/* Background Ambience */}
@@ -2785,6 +2867,46 @@ const EmotionDetection = () => {
       </AnimatePresence>
 
       <main className="max-w-7xl mx-auto px-4 py-6 md:py-8">
+        {/* Siri-style Strands orb — centered just below the navbar */}
+        <AnimatePresence>
+          {isCameraOn && (
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.8 }}
+              transition={{ duration: 0.45, ease: "easeOut" }}
+              className="relative mx-auto -mt-2 mb-1 h-16 w-16 sm:-mt-1 sm:h-24 sm:w-24"
+            >
+              <Strands
+                glass
+                listening
+                energy={0.4 + confidence * 0.55}
+                colors={STRANDS_COLORS}
+                count={3}
+                speed={1}
+                amplitude={0.9}
+                waviness={1}
+                thickness={1}
+                spread={0.9}
+                glow={1.1}
+                taper={1}
+                intensity={1}
+                saturation={1}
+                hueShift={0}
+                scale={1}
+                glassSize={1}
+                refraction={1.2}
+                dispersion={1}
+                rim={1}
+                interactive
+                clickPulse
+                intro
+                maxDevicePixelRatio={1.5}
+              />
+            </motion.div>
+          )}
+        </AnimatePresence>
+
         {/* Top Bar Status */}
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
           <AnimatePresence mode="wait">
@@ -3006,6 +3128,158 @@ const EmotionDetection = () => {
                   </motion.div>
                 )}
               </AnimatePresence>
+            </div>
+
+            {/* Emotion Timeline */}
+            <div className="bg-slate-900/50 backdrop-blur-sm rounded-2xl border border-slate-800 p-5">
+              <div className="flex items-center justify-between gap-3 mb-4">
+                <div className="flex items-center gap-3">
+                  <Activity className="w-6 h-6 text-cyan-400" />
+                  <h3 className="text-xl font-semibold">Emotion Timeline</h3>
+                </div>
+                <button
+                  onClick={exportEmotionCSV}
+                  disabled={emotionHistory.length === 0}
+                  className={`flex items-center gap-2 px-3 py-2 rounded-xl text-sm font-semibold transition-colors ${
+                    emotionHistory.length === 0
+                      ? "bg-slate-800 text-slate-500 cursor-not-allowed"
+                      : "bg-slate-800 text-cyan-300 hover:bg-slate-700"
+                  }`}
+                >
+                  <Download className="w-4 h-4" />
+                  Export CSV
+                </button>
+              </div>
+
+              {chartData.length === 0 ? (
+                <p className="text-center text-slate-400 py-10">
+                  Start the camera to build your emotion timeline
+                </p>
+              ) : (
+                <div className="space-y-6">
+                  <div className="h-52">
+                    <ResponsiveContainer width="100%" height="100%">
+                      <AreaChart
+                        data={chartData}
+                        margin={{ top: 8, right: 8, left: -18, bottom: 0 }}
+                      >
+                        <defs>
+                          <linearGradient
+                            id="confidenceFill"
+                            x1="0"
+                            y1="0"
+                            x2="0"
+                            y2="1"
+                          >
+                            <stop
+                              offset="0%"
+                              stopColor="#22d3ee"
+                              stopOpacity={0.6}
+                            />
+                            <stop
+                              offset="100%"
+                              stopColor="#a855f7"
+                              stopOpacity={0.05}
+                            />
+                          </linearGradient>
+                        </defs>
+                        <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" />
+                        <XAxis
+                          dataKey="index"
+                          tickFormatter={(i) => chartData[i]?.time ?? ""}
+                          tick={{ fill: "#94a3b8", fontSize: 11 }}
+                          stroke="#334155"
+                          minTickGap={24}
+                        />
+                        <YAxis
+                          domain={[0, 100]}
+                          tick={{ fill: "#94a3b8", fontSize: 11 }}
+                          stroke="#334155"
+                          tickFormatter={(value) => `${value}%`}
+                        />
+                        <Tooltip
+                          contentStyle={{
+                            background: "#0f172a",
+                            border: "1px solid #334155",
+                            borderRadius: 12,
+                            color: "#e2e8f0",
+                          }}
+                          labelFormatter={(i) => chartData[i]?.time ?? ""}
+                          formatter={(value) => [`${value}%`, "Confidence"]}
+                        />
+                        <Area
+                          type="monotone"
+                          dataKey="confidence"
+                          stroke="#22d3ee"
+                          strokeWidth={2}
+                          fill="url(#confidenceFill)"
+                          isAnimationActive={false}
+                        />
+                      </AreaChart>
+                    </ResponsiveContainer>
+                  </div>
+
+                  <div>
+                    <p className="text-xs uppercase tracking-wider text-slate-500 mb-2">
+                      Emotion distribution
+                    </p>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 items-center">
+                      <div className="h-40">
+                        <ResponsiveContainer width="100%" height="100%">
+                          <PieChart>
+                            <Pie
+                              data={emotionCounts}
+                              dataKey="value"
+                              nameKey="name"
+                              innerRadius={35}
+                              outerRadius={62}
+                              paddingAngle={2}
+                              isAnimationActive={false}
+                            >
+                              {emotionCounts.map((entry) => (
+                                <Cell
+                                  key={entry.key}
+                                  fill={emotionChartColors[entry.key]}
+                                />
+                              ))}
+                            </Pie>
+                            <Tooltip
+                              contentStyle={{
+                                background: "#0f172a",
+                                border: "1px solid #334155",
+                                borderRadius: 12,
+                                color: "#e2e8f0",
+                              }}
+                            />
+                          </PieChart>
+                        </ResponsiveContainer>
+                      </div>
+                      <ul className="space-y-1.5">
+                        {emotionCounts.map((entry) => (
+                          <li
+                            key={entry.key}
+                            className="flex items-center justify-between text-sm"
+                          >
+                            <span className="flex items-center gap-2">
+                              <span
+                                className="w-2.5 h-2.5 rounded-full"
+                                style={{
+                                  backgroundColor:
+                                    emotionChartColors[entry.key],
+                                }}
+                              />
+                              {entry.name}
+                            </span>
+                            <span className="text-slate-400">
+                              {entry.value}
+                            </span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
 
             {/* Emotion History */}

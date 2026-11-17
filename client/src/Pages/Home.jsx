@@ -61,7 +61,7 @@
 //   };
 
 //   return (
-//     <div className="min-h-screen bg-gradient-to-br from-slate-950 via-purple-950/30 to-slate-950 text-white font-sans overflow-hidden">
+//     <div className="min-h-screen bg-gradient-to-br from-slate-950 via-purple-950/30 to-slate-950 text-white overflow-hidden">
 //       {/* Animated Background Elements */}
 //       <div className="fixed inset-0 -z-10 overflow-hidden">
 //         <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-purple-500/5 rounded-full blur-3xl animate-pulse"></div>
@@ -94,7 +94,7 @@
 //               variants={fadeInUp}
 //               className="text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight mb-6"
 //             >
-//               <span className="block bg-gradient-to-r from-white via-purple-100 to-cyan-100 bg-clip-text text-transparent">
+//               <span className="block bg-gradient-to-r from-purple-300 to-cyan-300 bg-clip-text text-transparent">
 //                 FaceTunes
 //               </span>
 //               <span className="block text-2xl md:text-3xl lg:text-4xl font-normal mt-4 text-slate-300">
@@ -447,7 +447,7 @@ const Home = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-950 via-purple-950/30 to-slate-950 text-white font-sans overflow-hidden">
+    <div className="min-h-screen bg-gradient-to-br from-slate-950 via-purple-950/30 to-slate-950 text-white overflow-hidden">
       {/* Animated Background Elements */}
       <div className="fixed inset-0 -z-10 overflow-hidden">
         <div className="absolute top-1/4 left-1/4 w-64 h-64 sm:w-96 sm:h-96 bg-purple-500/5 rounded-full blur-3xl animate-pulse"></div>
@@ -480,8 +480,11 @@ const Home = () => {
               variants={fadeInUp}
               className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold tracking-tight mb-4 sm:mb-6"
             >
-              <span className="block bg-gradient-to-r from-white via-purple-100 to-cyan-100 bg-clip-text text-transparent">
-                FaceTunes
+              <span className="block text-white">
+                Face
+                <span className="bg-gradient-to-r from-purple-300 to-cyan-300 bg-clip-text text-transparent">
+                  Tunes
+                </span>
               </span>
               <span className="block text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl font-normal mt-2 sm:mt-4 text-slate-300">
                 Where Emotion Meets Melody

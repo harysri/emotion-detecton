@@ -2190,6 +2190,7 @@ import {
   Unlock,
   Download,
 } from "lucide-react";
+import { useTheme } from "../context/ThemeContext";
 
 // Strands palette mapped onto the site's purple → cyan gradient theme
 const STRANDS_COLORS = [
@@ -2203,6 +2204,18 @@ const STRANDS_COLORS = [
 ];
 
 const EmotionDetection = () => {
+  const { theme } = useTheme();
+  const isLightTheme = theme === "light";
+  const chartGridColor = isLightTheme ? "#e2e8f0" : "#1e293b";
+  const chartTickColor = isLightTheme ? "#64748b" : "#94a3b8";
+  const chartAxisColor = isLightTheme ? "#cbd5e1" : "#334155";
+  const chartTooltipStyle = {
+    background: isLightTheme ? "#ffffff" : "#0f172a",
+    border: `1px solid ${isLightTheme ? "#e2e8f0" : "#334155"}`,
+    borderRadius: 12,
+    color: isLightTheme ? "#0f172a" : "#e2e8f0",
+  };
+
   const [isCameraOn, setIsCameraOn] = useState(false);
   const [currentEmotion, setCurrentEmotion] = useState("neutral");
   const [isPlaying, setIsPlaying] = useState(false);
@@ -3183,27 +3196,25 @@ const EmotionDetection = () => {
                             />
                           </linearGradient>
                         </defs>
-                        <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" />
+                        <CartesianGrid
+                          strokeDasharray="3 3"
+                          stroke={chartGridColor}
+                        />
                         <XAxis
                           dataKey="index"
                           tickFormatter={(i) => chartData[i]?.time ?? ""}
-                          tick={{ fill: "#94a3b8", fontSize: 11 }}
-                          stroke="#334155"
+                          tick={{ fill: chartTickColor, fontSize: 11 }}
+                          stroke={chartAxisColor}
                           minTickGap={24}
                         />
                         <YAxis
                           domain={[0, 100]}
-                          tick={{ fill: "#94a3b8", fontSize: 11 }}
-                          stroke="#334155"
+                          tick={{ fill: chartTickColor, fontSize: 11 }}
+                          stroke={chartAxisColor}
                           tickFormatter={(value) => `${value}%`}
                         />
                         <Tooltip
-                          contentStyle={{
-                            background: "#0f172a",
-                            border: "1px solid #334155",
-                            borderRadius: 12,
-                            color: "#e2e8f0",
-                          }}
+                          contentStyle={chartTooltipStyle}
                           labelFormatter={(i) => chartData[i]?.time ?? ""}
                           formatter={(value) => [`${value}%`, "Confidence"]}
                         />
@@ -3244,12 +3255,7 @@ const EmotionDetection = () => {
                               ))}
                             </Pie>
                             <Tooltip
-                              contentStyle={{
-                                background: "#0f172a",
-                                border: "1px solid #334155",
-                                borderRadius: 12,
-                                color: "#e2e8f0",
-                              }}
+                              contentStyle={chartTooltipStyle}
                             />
                           </PieChart>
                         </ResponsiveContainer>

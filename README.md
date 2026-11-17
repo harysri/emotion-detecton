@@ -42,7 +42,7 @@ Your face becomes the DJ. No backend, no data uploads — **everything runs loca
 - **Emotion History Log** — Timestamped log of detected emotions with confidence scores
 - **Emotion Timeline & Charts** — Live confidence timeline and mood distribution powered by Recharts, with one-click CSV export
 - **Privacy First** — All detection runs client-side; no images or data are sent to any server
-- **Responsive Dark UI** — Purple-cyan gradient theme built with Tailwind CSS and Framer Motion animations
+- **Light & Dark Themes** — One-click sun/moon toggle with a saved preference, plus a responsive purple-cyan gradient UI built with Tailwind CSS and Framer Motion
 
 ---
 

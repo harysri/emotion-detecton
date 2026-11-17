@@ -4,6 +4,21 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/FaceTunes.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#020617" />
+    <script>
+      (() => {
+        let theme = "dark";
+        try {
+          if (localStorage.getItem("facetunes-theme") === "light") {
+            theme = "light";
+          }
+        } catch {
+          theme = "dark";
+        }
+        document.documentElement.classList.add(theme);
+        document.documentElement.style.colorScheme = theme;
+      })();
+    </script>
     <title>Face Tunes</title>
   </head>
   <body>

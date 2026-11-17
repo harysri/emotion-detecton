@@ -2,6 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
+html {
+  color-scheme: dark;
+}
+
+html.light {
+  color-scheme: light;
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -9,11 +17,238 @@
 }
 body {
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-  background-color: #f5f5f5;
+  background-color: #020617;
   font-size: 30px;
-  color: #333;
+  color: #e2e8f0;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 a {
   text-decoration: none;
-  color: inherit; 
+  color: inherit;
+}
+
+/* ---------------------------------------------------------------
+   Light theme
+   The UI is authored with Tailwind's dark slate palette, so light
+   mode remaps those utilities instead of duplicating every class
+   in the markup. Dark mode (the default) is untouched.
+---------------------------------------------------------------- */
+
+html.light body {
+  background-color: #f8fafc;
+  color: #0f172a;
+}
+
+/* surfaces */
+html.light .bg-slate-950 {
+  background-color: #f8fafc;
+}
+html.light .bg-slate-900 {
+  background-color: #ffffff;
+}
+html.light .bg-slate-800 {
+  background-color: #f1f5f9;
+}
+html.light .bg-slate-700 {
+  background-color: #e2e8f0;
+}
+
+html.light .bg-slate-950\/50 {
+  background-color: rgba(255, 255, 255, 0.55);
+}
+html.light .bg-slate-950\/70 {
+  background-color: rgba(255, 255, 255, 0.75);
+}
+html.light .bg-slate-950\/80 {
+  background-color: rgba(255, 255, 255, 0.85);
+}
+html.light .bg-slate-900\/30 {
+  background-color: rgba(255, 255, 255, 0.5);
+}
+html.light .bg-slate-900\/50 {
+  background-color: rgba(255, 255, 255, 0.65);
+}
+html.light .bg-slate-900\/70 {
+  background-color: rgba(255, 255, 255, 0.8);
+}
+html.light .bg-slate-900\/80 {
+  background-color: rgba(255, 255, 255, 0.88);
+}
+html.light .bg-slate-900\/90 {
+  background-color: rgba(255, 255, 255, 0.92);
+}
+html.light .bg-slate-800\/30 {
+  background-color: rgba(241, 245, 249, 0.6);
+}
+html.light .bg-slate-800\/50 {
+  background-color: rgba(241, 245, 249, 0.85);
+}
+html.light .bg-slate-800\/60 {
+  background-color: rgba(241, 245, 249, 0.9);
+}
+html.light .bg-white\/5 {
+  background-color: rgba(15, 23, 42, 0.04);
+}
+html.light .bg-white\/10 {
+  background-color: rgba(15, 23, 42, 0.06);
+}
+
+/* text */
+html.light .text-white {
+  color: #0f172a;
+}
+html.light .text-slate-100 {
+  color: #0f172a;
+}
+html.light .text-slate-200 {
+  color: #1e293b;
+}
+html.light .text-slate-300 {
+  color: #334155;
+}
+html.light .text-slate-400 {
+  color: #475569;
+}
+html.light .text-slate-500 {
+  color: #64748b;
+}
+html.light .text-slate-600 {
+  color: #64748b;
+}
+html.light .text-slate-700 {
+  color: #475569;
+}
+html.light .text-slate-800 {
+  color: #1e293b;
+}
+html.light .text-slate-950 {
+  color: #0f172a;
+}
+html.light .text-purple-300 {
+  color: #7c3aed;
+}
+html.light .text-purple-400 {
+  color: #7c3aed;
+}
+html.light .text-purple-500 {
+  color: #7c3aed;
+}
+html.light .text-cyan-300 {
+  color: #0e7490;
+}
+html.light .text-cyan-400 {
+  color: #0891b2;
+}
+html.light .text-indigo-400 {
+  color: #4f46e5;
+}
+html.light .text-yellow-400 {
+  color: #b45309;
+}
+html.light .text-amber-400 {
+  color: #b45309;
+}
+
+/* borders */
+html.light .border-slate-900 {
+  border-color: #e2e8f0;
+}
+html.light .border-slate-800 {
+  border-color: #e2e8f0;
+}
+html.light .border-slate-800\/50 {
+  border-color: rgba(226, 232, 240, 0.8);
+}
+html.light .border-slate-700 {
+  border-color: #cbd5e1;
+}
+
+/* gradient stops (page shells, cards, dividers) */
+html.light .from-slate-950 {
+  --tw-gradient-from: #f8fafc 0%;
+}
+html.light .from-slate-950\/90 {
+  --tw-gradient-from: rgba(248, 250, 252, 0.92) 0%;
+}
+html.light .from-slate-900 {
+  --tw-gradient-from: #ffffff 0%;
+}
+html.light .to-slate-950 {
+  --tw-gradient-to: #f8fafc 100%;
+}
+html.light .via-purple-950\/30 {
+  --tw-gradient-via: rgba(237, 233, 254, 0.55) 50%;
+  --tw-gradient-stops: var(--tw-gradient-from), rgba(237, 233, 254, 0.55) 50%,
+    var(--tw-gradient-to);
+}
+html.light .via-purple-950\/20 {
+  --tw-gradient-via: rgba(237, 233, 254, 0.4) 50%;
+  --tw-gradient-stops: var(--tw-gradient-from), rgba(237, 233, 254, 0.4) 50%,
+    var(--tw-gradient-to);
+}
+html.light .via-slate-800 {
+  --tw-gradient-via: #e2e8f0 50%;
+  --tw-gradient-stops: var(--tw-gradient-from), #e2e8f0 50%,
+    var(--tw-gradient-to);
+}
+
+/* keep white text/icons where they sit on saturated accent fills */
+html.light .from-purple-600.text-white,
+html.light .from-purple-500.text-white,
+html.light .bg-purple-500.text-white,
+html.light .bg-purple-600.text-white,
+html.light .bg-blue-500.text-white,
+html.light .bg-cyan-500.text-white,
+html.light .bg-green-500.text-white,
+html.light .bg-yellow-500.text-white,
+html.light .bg-red-500.text-white,
+html.light .bg-red-600.text-white,
+html.light .bg-gray-500.text-white,
+html.light .from-purple-600 .text-white,
+html.light .from-purple-500 .text-white,
+html.light .from-cyan-500 .text-white,
+html.light .from-cyan-600 .text-white {
+  color: #ffffff;
+}
+
+/* gradient headline/brand text needs darker stops on light surfaces */
+html.light .bg-clip-text.from-white {
+  --tw-gradient-from: #0f172a 0%;
+}
+html.light .bg-clip-text.from-purple-300 {
+  --tw-gradient-from: #7c3aed 0%;
+}
+html.light .bg-clip-text.via-white {
+  --tw-gradient-via: #0f172a 50%;
+  --tw-gradient-stops: var(--tw-gradient-from), #0f172a 50%,
+    var(--tw-gradient-to);
+}
+html.light .bg-clip-text.to-slate-300 {
+  --tw-gradient-to: #64748b 100%;
+}
+html.light .bg-clip-text.to-cyan-300 {
+  --tw-gradient-to: #0891b2 100%;
+}
+
+/* hover states */
+html.light .hover\:bg-slate-800:hover {
+  background-color: #f1f5f9;
+}
+html.light .hover\:bg-slate-800\/50:hover {
+  background-color: rgba(241, 245, 249, 0.9);
+}
+html.light .hover\:bg-slate-700:hover {
+  background-color: #e2e8f0;
+}
+html.light .hover\:border-slate-700:hover {
+  border-color: #cbd5e1;
+}
+html.light .hover\:text-white:hover {
+  color: #0f172a;
+}
+html.light .hover\:bg-white\/5:hover {
+  background-color: rgba(15, 23, 42, 0.04);
+}
+html.light .hover\:text-indigo-400:hover {
+  color: #4338ca;
 }

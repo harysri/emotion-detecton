@@ -1,11 +1,23 @@
 //client/src/Components/Navbar.jsx
 import React, { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { HomeIcon, Menu, X, Sparkles, User, LogIn, Music } from "lucide-react";
+import {
+  HomeIcon,
+  Menu,
+  X,
+  Sparkles,
+  User,
+  LogIn,
+  Music,
+  Sun,
+  Moon,
+} from "lucide-react";
+import { useTheme } from "../context/ThemeContext";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
+  const { theme, toggleTheme } = useTheme();
 
   const navItems = [
     { name: "Home", path: "/", icon: <HomeIcon className="w-4 h-4" /> },
@@ -50,7 +62,7 @@ const Navbar = () => {
           </Link>
 
           {/* DESKTOP NAVIGATION */}
-          <div className="hidden md:flex items-center space-x-1">
+          <div className="hidden md:flex items-center space-x-1 ml-auto">
             {navItems.map((item) => (
               <Link
                 key={item.path}
@@ -73,15 +85,36 @@ const Navbar = () => {
             ))}
           </div>
 
-          {/* MOBILE MENU BUTTON */}
-          <button
-            onClick={() => setIsOpen(!isOpen)}
-            className="md:hidden inline-flex items-center justify-center p-2 rounded-full text-slate-400 hover:text-white hover:bg-slate-800/50 focus:outline-none focus:ring-2 focus:ring-slate-700 transition-all duration-300"
-            aria-expanded={isOpen}
-          >
-            <span className="sr-only">Open main menu</span>
-            {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-          </button>
+          {/* RIGHT-SIDE ACTIONS */}
+          <div className="flex items-center gap-1">
+            {/* THEME TOGGLE */}
+            <button
+              onClick={toggleTheme}
+              className="inline-flex items-center justify-center p-2 rounded-full text-slate-400 hover:text-white hover:bg-slate-800/50 focus:outline-none focus:ring-2 focus:ring-slate-700 transition-all duration-300"
+              aria-label={
+                theme === "dark" ? "Switch to light mode" : "Switch to dark mode"
+              }
+              title={
+                theme === "dark" ? "Switch to light mode" : "Switch to dark mode"
+              }
+            >
+              {theme === "dark" ? (
+                <Sun className="w-5 h-5" />
+              ) : (
+                <Moon className="w-5 h-5" />
+              )}
+            </button>
+
+            {/* MOBILE MENU BUTTON */}
+            <button
+              onClick={() => setIsOpen(!isOpen)}
+              className="md:hidden inline-flex items-center justify-center p-2 rounded-full text-slate-400 hover:text-white hover:bg-slate-800/50 focus:outline-none focus:ring-2 focus:ring-slate-700 transition-all duration-300"
+              aria-expanded={isOpen}
+            >
+              <span className="sr-only">Open main menu</span>
+              {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            </button>
+          </div>
         </div>
 
         {/* MOBILE MENU */}
